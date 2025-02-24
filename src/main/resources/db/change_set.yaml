@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/task_V001_initial.sql
