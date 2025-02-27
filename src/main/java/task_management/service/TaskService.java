@@ -41,10 +41,9 @@ public class TaskService {
 
     @Transactional
     public Task updateTask(Task task, UUID id) {
-        Optional<Task> existingTask = taskRepository.findById(id);
-        if (existingTask.isEmpty()) {
-            throw new RuntimeException("Задача с ID " + id + " не найдена");
-        }
+        Optional<Task> existingTask = Optional.ofNullable(taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Задача с ID " + id + " не найдена")));
+
         Task updatedTask = existingTask.get();
         updatedTask.setTitle(task.getTitle());
         updatedTask.setDescription(task.getDescription());
@@ -55,7 +54,8 @@ public class TaskService {
 
     @Transactional
     public Task deleteTask(UUID id) {
-        Task task = taskRepository.findById(id).orElse(null);
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Задача с ID " + id + " не найдена"));
         taskRepository.delete(task);
 
         return task;

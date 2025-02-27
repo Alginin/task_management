@@ -1,6 +1,7 @@
 package task_management.aspect;
 
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
@@ -14,12 +15,14 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LogginAspect {
+
     @Pointcut("execution(* task_management.controller.TaskController.*(..))")
-    public void taskControllerMethods() {}
+    public void taskControllerMethods() {
+    }
 
     @Before("taskControllerMethods()")
-    public void logBefore() {
-        log.info("Запуск метода начался...");
+    public void logBefore(JoinPoint joinPoint) {
+        log.info("Запуск метода {} начался...", joinPoint.getSignature());
     }
 
     @AfterThrowing(pointcut = "taskControllerMethods()", throwing = "exception")
