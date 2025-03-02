@@ -1,9 +1,14 @@
 package task_management.service;
 
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import task_management.dto.KafkaDto;
 import task_management.entity.Task;
+import task_management.mapper.TaskMapper;
+import task_management.producer.KafkaTaskProducer;
 import task_management.repository.TaskRepository;
 
 import java.util.List;
@@ -12,9 +17,15 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Builder
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final TaskMapper mapper;
+    private final TaskMapper taskMapper;
+
+    @Qualifier("kafkaTaskProducer")
+    private final KafkaTaskProducer kafkaProducer;
 
     @Transactional
     public Task createTask(Task task) {
@@ -48,6 +59,10 @@ public class TaskService {
         updatedTask.setTitle(task.getTitle());
         updatedTask.setDescription(task.getDescription());
         updatedTask.setUserId(task.getUserId());
+        updatedTask.setStatus(task.getStatus());
+
+        KafkaDto forKafka = taskMapper.toKafkaDto(existingTask.get());
+        kafkaProducer.sendTo(forKafka);
 
         return taskRepository.save(updatedTask);
     }
