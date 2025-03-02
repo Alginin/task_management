@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/task_V001_initial.sql
+  - include:
+      file: db/task_V001_add_column_task_status.sql
