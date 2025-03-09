@@ -17,11 +17,13 @@ configurations {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.postgresql:postgresql'
@@ -29,8 +31,17 @@ dependencies {
     implementation 'jakarta.validation:jakarta.validation-api:3.0.2'
     implementation 'org.liquibase:liquibase-core'
 
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation("org.springframework.retry:spring-retry:2.0.11")
+
+    implementation ("org.springframework.boot:spring-boot-starter-mail")
+
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+    implementation 'org.example:starter:0.0.1-SNAPSHOT'
+
 }

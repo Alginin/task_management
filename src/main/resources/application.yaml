@@ -1,12 +1,18 @@
 spring:
   application:
     name: task_management
+  aop:
+    auto: true
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: user
+    url: jdbc:postgresql://localhost:5432/mydatabase
+    username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
+
+  liquibase:
+    change-log: classpath:db/change_set.yaml
+    drop-first: true
 
   jpa:
     hibernate:
@@ -15,6 +21,42 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  liquibase:
-    change-log: classpath:db/change_set.yaml
+# host и port для gmail.com
+  mail:
+    host: smtp.gmail.com
+    port: 587
+#    Адрес электронной почты которую используете для отправки
+    username:
+#    Пароль необходимо создать для сторонних приложений и включить в настройках почты
+    password:
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+#      Адрес электронной почты которую используете для получения уведомлений
+    mailTo:
+    subjectForEmail: Задача изменила статус
+
+logging:
+  http:
+    enabled: true
+    level: INFO
+
+kafka:
+  bootstrap-servers: localhost:9092
+  producer:
+    enable: true
+  topic: task_status_updates
+  consumer:
+    group-id: email_consumer_group
+    max-poll-records: 10
+    max-partition-fetch-bytes: 1048576
+  listener:
+    poll-timeout: 3000
+
+
+
+
+
+
 

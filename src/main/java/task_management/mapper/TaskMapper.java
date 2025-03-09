@@ -1,6 +1,7 @@
 package task_management.mapper;
 
 import org.springframework.stereotype.Component;
+import task_management.dto.KafkaDto;
 import task_management.dto.TaskDto;
 import task_management.entity.Task;
 
@@ -15,6 +16,7 @@ public class TaskMapper {
                 .title(task.getTitle())
                 .description(task.getDescription())
                 .userId(task.getUserId())
+                .status(task.getStatus())
                 .build();
     }
 
@@ -24,6 +26,7 @@ public class TaskMapper {
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
                 .userId(taskDto.getUserId())
+                .status(taskDto.getStatus())
                 .build();
     }
 
@@ -31,5 +34,12 @@ public class TaskMapper {
         return tasks.stream()
                 .map(this::toTaskDto)
                 .toList();
+    }
+
+    public KafkaDto toKafkaDto(Task updatedTask) {
+        return KafkaDto.builder()
+                .id(updatedTask.getId())
+                .status(updatedTask.getStatus())
+                .build();
     }
 }
