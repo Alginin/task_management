@@ -1,14 +1,14 @@
 package task_management.config.kafka;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import java.util.Properties;
 
-@Configuration
+@ConfigurationProperties
 public class MailConfig {
 
     @Value("${spring.mail.host}")

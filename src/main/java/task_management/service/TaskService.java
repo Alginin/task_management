@@ -61,10 +61,12 @@ public class TaskService {
         updatedTask.setUserId(task.getUserId());
         updatedTask.setStatus(task.getStatus());
 
+        Task updatedTaskService = taskRepository.save(updatedTask);
+
         KafkaDto forKafka = taskMapper.toKafkaDto(existingTask.get());
         kafkaProducer.sendTo(forKafka);
 
-        return taskRepository.save(updatedTask);
+        return updatedTaskService;
     }
 
     @Transactional

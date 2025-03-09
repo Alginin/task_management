@@ -40,7 +40,7 @@ public class KafkaProducerConfig {
         return new DefaultKafkaProducerFactory<>(props);
     }
 
-    @Bean(name = "MYBEEN")
+    @Bean(name = "beenOne")
     public KafkaTemplate<String, KafkaDto> kafkaTemplate(ProducerFactory<String, KafkaDto> producerFactory) {
 
         return new KafkaTemplate<>(producerFactory);
@@ -49,7 +49,7 @@ public class KafkaProducerConfig {
     @Bean
     @Primary
     @ConditionalOnProperty(value = "kafka.producer.enable", havingValue = "true", matchIfMissing = true)
-    public KafkaTaskProducer producerClient(@Qualifier("MYBEEN") KafkaTemplate template) {
+    public KafkaTaskProducer producerClient(@Qualifier("beenOne") KafkaTemplate template) {
         template.setDefaultTopic(taskStatusUpdates);
 
         return new KafkaTaskProducer(template);

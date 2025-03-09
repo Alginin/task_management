@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import task_management.dto.KafkaDto;
 import task_management.notification.NotificationService;
 
+import java.util.List;
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -19,13 +21,15 @@ public class KafkaTaskConsumer {
 
     @Retryable(retryFor = {Exception.class}, maxAttempts = 3, backoff = @Backoff(delay = 1000, multiplier = 2))
     @KafkaListener(topics = "${kafka.topic}", groupId = "${kafka.consumer.group-id}", containerFactory = "kafkaListenerContainerFactory")
-    public void listen(KafkaDto message, Acknowledgment ack) {
+    public void listen(List<KafkaDto> messages, Acknowledgment ack) {
 
         try {
-            log.info("СООБЩЕНЕ ПОЛУЧЕНО {}", message);
-            ack.acknowledge();
+            for (KafkaDto message : messages) {
+                log.info("СООБЩЕНЕ ПОЛУЧЕНО {}", message);
+                mailSendService.sendEmail(message);
+            }
 
-            mailSendService.sendEmail(message);
+            ack.acknowledge();
         } catch (Exception ex) {
             log.error("Ошибка при обработке сообщения: {}", ex.getMessage());
             throw ex;

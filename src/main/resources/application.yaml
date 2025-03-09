@@ -1,6 +1,8 @@
 spring:
   application:
     name: task_management
+  aop:
+    auto: true
 
   datasource:
     url: jdbc:postgresql://localhost:5432/mydatabase
@@ -34,6 +36,11 @@ spring:
 #      Адрес электронной почты которую используете для получения уведомлений
     mailTo:
     subjectForEmail: Задача изменила статус
+
+logging:
+  http:
+    enabled: true
+    level: INFO
 
 kafka:
   bootstrap-servers: localhost:9092
