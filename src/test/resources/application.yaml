@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: task_management
+  liquibase:
+    change-log: classpath:db/change_set.yaml
+    drop-first: true
+  datasource:
+    url:
+    username:
+    password:
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+    mailTo:
+    subjectForEmail: Задача изменила статус
+kafka:
+  bootstrap-servers: ${spring.kafka.bootstrap-servers}
+  producer:
+    enable: true
+  topic: task_status_updates
+  consumer:
+    group-id: test_group
+    max-poll-records: 10
+    max-partition-fetch-bytes: 1048576
+server:
+  port: 8282
